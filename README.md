@@ -64,7 +64,7 @@
 
 | volumes                                                      | host                                 | container                                        |
 | ------------------------------------------------------------ | ------------------------------------ | ------------------------------------------------ |
-| \- ./httpd/cert:/usr/local/apache2/cert                      | ./httpd/cert                         | /usr/local/apache2/cer                           |
+| \- ./httpd/cert:/usr/local/apache2/cert                      | ./httpd/cert                         | /usr/local/apache2/cert                           |
 | \- ./httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf     | ./httpd/httpd.conf                   | /usr/local/apache2/conf/httpd.conf               |
 | \- /etc/localtime:/etc/localtime:ro                          | /etc/localtime:                      | /etc/localtime:ro                                |
 | \- /var/run/docker.sock:/var/run/docker.sock:ro              | /var/run/docker.sock                 | /var/run/docker.sock:ro                          |
@@ -88,8 +88,9 @@
 
 Вам необходимо обновиться, установить любимый текстовый редактор и выполнить установку и настройку docker вот по этим ссылкам:
 
-[ubuntu]: https://docs.docker.com/engine/install/ubuntu/	"Установка на ubuntu"
-[linux-postinstall]: ttps://docs.docker.com/engine/install/linux-postinstall/	"Настройка после установки"
+[ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+
+[linux-postinstall](https://docs.docker.com/engine/install/linux-postinstall/)	
 
 Получение всех необходимых файлов для развертывания выполняется с использованием git. Вы клонируете репозиторий под пользователем deploy, у поьзователя deploy отсутствуют привелегии sudo и единственная его задача запускать Makefile. Установите утилиту make (переключившись на пользователя root, разумеется!), она нам понадобится:
 
@@ -102,7 +103,7 @@ apt-get install make
 
 Теперь взглянем на структуру каталога с проектом:
 
-![Каталог проекта](/home/volodya-wtf/Pictures/Screenshot from 2022-05-25 16-39-35.png)
+![Каталог проекта](https://github.com/volodya-wtf/stand/blob/main/readme/dir.png)
 
 Сдесь мы видим уже описанный выше *docker-compose.yml,* *Makefile с* командами запуска проекта, пример окружения *.env.example* и .gitignore. В папках распологаются файлы настроек для сервисов *grafana*, *httpd*, *jupyter*, *prometheus*. 
 
@@ -156,17 +157,17 @@ make install
 
 Незамедлительно вы начнете видеть диагностические сообщения. В случае удачного завершения, список поднятых сервисов выглядит:
 
-![docker_ps](/home/volodya-wtf/Desktop/Этапы деплоя/docker_ps.png)
+![docker_ps](https://github.com/volodya-wtf/stand/blob/main/readme/docker_ps.png)
 
 #### Начнем поэтапный обход и диагностику сервисов.
 
 1. httdp. Тут все тривиально.
 
-![httpd](/home/volodya-wtf/Desktop/Этапы деплоя/httpd.png)
+![httpd](https://github.com/volodya-wtf/stand/blob/main/readme/httpd.png)
 
 2. portainer. Свидетельством успешного старта будет список запущенных контейнеров.
 
-   ![portainer](/home/volodya-wtf/Desktop/Этапы деплоя/portainer.png)
+   ![portainer](https://github.com/volodya-wtf/stand/blob/main/readme/portainer.png)
 
 3.  Токен для jupyter
 
@@ -176,21 +177,21 @@ make install
  docker logs jupyter -f
 ```
 
-![](/home/volodya-wtf/Desktop/Этапы деплоя/jupyter.png)
+![](https://github.com/volodya-wtf/stand/blob/main/readme/jupyter.png)
 
 Находим, копируем и вставляем 
 
 [jupyter]: https://your-ip-or-domain/jupyter/	"Login"
 
-![](/home/volodya-wtf/Desktop/Этапы деплоя/jupyter-1.png)
+![](https://github.com/volodya-wtf/stand/blob/main/readme/jupyter-1.png)
 
-![ipython](/home/volodya-wtf/Desktop/Этапы деплоя/jupyter-2.png)
+![ipython](https://github.com/volodya-wtf/stand/blob/main/readme/jupyter-2.png)
 
 4. rstudio
 
 Логинемся под учетными данными из .env
 
-![rstudio](/home/volodya-wtf/Desktop/Этапы деплоя/rstudio.png)
+![rstudio](https://github.com/volodya-wtf/stand/blob/main/readme/rstudio.png)
 
 5. keycloak
 
@@ -198,7 +199,7 @@ make install
 
    [keycloak]: https://your-ip-or-domain/auth/	"keycloak"
 
-   ![keycloak](/home/volodya-wtf/Desktop/Этапы деплоя/keycloak.png)
+   ![keycloak](https://github.com/volodya-wtf/stand/blob/main/readme/keycloak.png)
 
 Вид панели администратора keycloak
 
@@ -206,9 +207,9 @@ make install
 
 Добавляем элемент и перемещаем. В случае проблем рекомендую проверить домен или ip адрес в конфиге Apache ./httpd/httpd.conf
 
-![n1-1](/home/volodya-wtf/Desktop/Этапы деплоя/n1-1.png)
+![n1-1](https://github.com/volodya-wtf/stand/blob/main/readme/n1-1.png)
 
-![n1-2](/home/volodya-wtf/Desktop/Этапы деплоя/n1-2.png)
+![n1-2](https://github.com/volodya-wtf/stand/blob/main/readme/n1-2.png))
 
 
 
@@ -216,37 +217,37 @@ make install
 
    Логинимся и добавляем в интерфейсе сервер с postgres. Все данные для входа и добавления базы берем из .env
 
-   ![pgadmin](/home/volodya-wtf/Desktop/Этапы деплоя/pgadmin.png)
+   ![pgadmin](https://github.com/volodya-wtf/stand/blob/main/readme/pgadmin.png)
 
 8. Переходим к самому интересному, секции мониторинга
 
 Логинимся данными из .env, создаем data source и импортируем три панели: *1860, 14114, 193*
 
-![1](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-2.png)
+![1](https://github.com/volodya-wtf/stand/blob/main/readme/grafana-2.png)
 
-![2](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-3.png)
-
-
+![2](https://github.com/volodya-wtf/stand/blob/main/readme/grafana-3.png)
 
 
 
-![3](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-4.png)
+
+
+![3](https://github.com/volodya-wtf/stand/blob/main/readme/grafana-4.png)
 
 И получаем соответственно:
 
-![5](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-5.png)
+![5](https://github.com/volodya-wtf/stand/blob/main/readme/grafana-5.png)
 
 Мониторинг docker:
 
-![6](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-6.png)
+![6](https://github.com/volodya-wtf/stand/blob/main/readme/grafana-6.png)
 
 Мониторинг postgres:
 
-![7](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-7.png)
+![7](https://github.com/volodya-wtf/stand/blob/main/readme/grafana-7.png)
 
 Мониторинг хоста:
 
-![8](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-8.png)
+![8](https://github.com/volodya-wtf/stand/blob/main/readme/grafana-8.png)
 
 
 
