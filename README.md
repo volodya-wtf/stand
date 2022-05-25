@@ -199,7 +199,7 @@ make install
 
    [keycloak]: https://your-ip-or-domain/auth/	"keycloak"
 
-   ![keycloak](/home/volodya-wtf/Desktop/Этапы деплоя/keycloak.png)
+   ![keycloak](https://github.com/volodya-wtf/stand/blob/main/readme/keycloak.png)
 
 Вид панели администратора keycloak
 
