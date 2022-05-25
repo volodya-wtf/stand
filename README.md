@@ -156,3 +156,97 @@ make install
 
 Незамедлительно вы начнете видеть диагностические сообщения. В случае удачного завершения, список поднятых сервисов выглядит:
 
+![docker_ps](/home/volodya-wtf/Desktop/Этапы деплоя/docker_ps.png)
+
+#### Начнем поэтапный обход и диагностику сервисов.
+
+1. httdp. Тут все тривиально.
+
+![httpd](/home/volodya-wtf/Desktop/Этапы деплоя/httpd.png)
+
+2. portainer. Свидетельством успешного старта будет список запущенных контейнеров.
+
+   ![portainer](/home/volodya-wtf/Desktop/Этапы деплоя/portainer.png)
+
+3.  Токен для jupyter
+
+   
+
+```bash
+ docker logs jupyter -f
+```
+
+![](/home/volodya-wtf/Desktop/Этапы деплоя/jupyter.png)
+
+Находим, копируем и вставляем 
+
+[jupyter]: https://your-ip-or-domain/jupyter/	"Login"
+
+![](/home/volodya-wtf/Desktop/Этапы деплоя/jupyter-1.png)
+
+![ipython](/home/volodya-wtf/Desktop/Этапы деплоя/jupyter-2.png)
+
+4. rstudio
+
+Логинемся под учетными данными из .env
+
+![rstudio](/home/volodya-wtf/Desktop/Этапы деплоя/rstudio.png)
+
+5. keycloak
+
+   Авторизация данными из .env 
+
+   [keycloak]: https://your-ip-or-domain/auth/	"keycloak"
+
+   ![keycloak](/home/volodya-wtf/Desktop/Этапы деплоя/keycloak.png)
+
+Вид панели администратора keycloak
+
+6. nifi 
+
+Добавляем элемент и перемещаем. В случае проблем рекомендую проверить домен или ip адрес в конфиге Apache ./httpd/httpd.conf
+
+![n1-1](/home/volodya-wtf/Desktop/Этапы деплоя/n1-1.png)
+
+![n1-2](/home/volodya-wtf/Desktop/Этапы деплоя/n1-2.png)
+
+
+
+7. postgres/pgadmin
+
+   Логинимся и добавляем в интерфейсе сервер с postgres. Все данные для входа и добавления базы берем из .env
+
+   ![pgadmin](/home/volodya-wtf/Desktop/Этапы деплоя/pgadmin.png)
+
+8. Переходим к самому интересному, секции мониторинга
+
+Логинимся данными из .env, создаем data source и импортируем три панели: *1860, 14114, 193*
+
+![1](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-2.png)
+
+![2](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-3.png)
+
+
+
+
+
+![3](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-4.png)
+
+И получаем соответственно:
+
+![5](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-5.png)
+
+Мониторинг docker:
+
+![6](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-6.png)
+
+Мониторинг postgres:
+
+![7](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-7.png)
+
+Мониторинг хоста:
+
+![8](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-8.png)
+
+
+
