@@ -103,7 +103,7 @@ apt-get install make
 
 Теперь взглянем на структуру каталога с проектом:
 
-![Каталог проекта](/home/volodya-wtf/Pictures/Screenshot from 2022-05-25 16-39-35.png)
+![Каталог проекта](https://github.com/volodya-wtf/stand/blob/main/readme/dir.png)
 
 Сдесь мы видим уже описанный выше *docker-compose.yml,* *Makefile с* командами запуска проекта, пример окружения *.env.example* и .gitignore. В папках распологаются файлы настроек для сервисов *grafana*, *httpd*, *jupyter*, *prometheus*. 
 
