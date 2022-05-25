@@ -177,7 +177,7 @@ services:
       DB_USER: ${PG_USERNAME}
       DB_PASSWORD: ${PG_PASSWORD}
       PROXY_ADDRESS_FORWARDING: "true"
-      #KEYCLOAK_FRONTEND_URL: https://#change_me/auth
+      #KEYCLOAK_FRONTEND_URL: https://localhost/auth
       KEYCLOAK_USER: ${KEYCLOAK_USER}
       KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
 

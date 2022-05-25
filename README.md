@@ -132,7 +132,7 @@ LoadModule rewrite_module modules/mod_rewrite.so
 LoadModule headers_module modules/mod_headers.so
 ```
 
-Эндпоинты регистрируются так: создается VirtualHost на 443 порту, и он поделен на Location. Общими для всех Location будут две дерективы импорта ключей, расположенных в папке ./httpd/cert/ и созданных командой:
+Эндпоинты регистрируются так: создается VirtualHost на 443 порту, и он поделен на Location. Общими для всех Location будут две дерективы импорта ключей, расположенных в папке ./httpd/cert/ и созданных командой (под пользователем root и последующим изменением прав):
 
 ```bash
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout server.key -out server.crt

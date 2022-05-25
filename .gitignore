@@ -1,2 +1,4 @@
 .env
 settings.json
+httpd/cert/server.crt
+httpd/cert/server.key
