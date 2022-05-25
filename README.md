@@ -64,7 +64,7 @@
 
 | volumes                                                      | host                                 | container                                        |
 | ------------------------------------------------------------ | ------------------------------------ | ------------------------------------------------ |
-| \- ./httpd/cert:/usr/local/apache2/cert                      | ./httpd/cert                         | /usr/local/apache2/cer                           |
+| \- ./httpd/cert:/usr/local/apache2/cert                      | ./httpd/cert                         | /usr/local/apache2/cert                           |
 | \- ./httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf     | ./httpd/httpd.conf                   | /usr/local/apache2/conf/httpd.conf               |
 | \- /etc/localtime:/etc/localtime:ro                          | /etc/localtime:                      | /etc/localtime:ro                                |
 | \- /var/run/docker.sock:/var/run/docker.sock:ro              | /var/run/docker.sock                 | /var/run/docker.sock:ro                          |
