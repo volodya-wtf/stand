@@ -88,8 +88,9 @@
 
 Вам необходимо обновиться, установить любимый текстовый редактор и выполнить установку и настройку docker вот по этим ссылкам:
 
-[ubuntu]: https://docs.docker.com/engine/install/ubuntu/	"Установка на ubuntu"
-[linux-postinstall]: ttps://docs.docker.com/engine/install/linux-postinstall/	"Настройка после установки"
+[](url)
+[ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+[linux-postinstall](https://docs.docker.com/engine/install/linux-postinstall/)	
 
 Получение всех необходимых файлов для развертывания выполняется с использованием git. Вы клонируете репозиторий под пользователем deploy, у поьзователя deploy отсутствуют привелегии sudo и единственная его задача запускать Makefile. Установите утилиту make (переключившись на пользователя root, разумеется!), она нам понадобится:
 
