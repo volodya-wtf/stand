@@ -1,0 +1,261 @@
+version: '3'
+
+networks:
+  belka_network:
+    ipam:
+      driver: default
+      config: 
+        - subnet: 172.18.0.0/16
+
+volumes:
+  postgres:
+    external: True
+  pgadmin:
+    external: True
+  portainer:
+    external: True
+  research:
+    external: True
+  nifi:
+    external: True
+  grafana_data:
+    external: True  
+  prometheus_data:
+    external: True
+
+services:
+  httpd:
+    image: httpd:2.4
+    container_name: httpd
+    restart: always
+    ports:
+      - 443:443      
+    volumes:
+      - ./httpd/cert:/usr/local/apache2/cert
+      - ./httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+    networks:
+      belka_network:
+        ipv4_address: 172.18.0.2
+
+  postgres:
+    image: postgres:14
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_USER: ${PG_USERNAME}
+      POSTGRES_DB: ${PG_DATABASE}
+    networks:
+      belka_network:
+        ipv4_address: 172.18.0.3
+    expose:
+      - "5432"
+    volumes:
+      - postgres
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    restart: always
+    user: 5050:5050
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_USER}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+      PGADMIN_LISTEN_PORT: 80
+    networks:
+      belka_network:
+        ipv4_address: 172.18.0.4
+    expose:
+      - "80"
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    depends_on:
+      - postgres
+      
+  portainer:
+    image: portainer/portainer-ce:2.9.3
+    container_name: portainer
+    restart: unless-stopped
+      #security_opt:
+      #- no-new-privileges:true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - portainer:/data
+    networks:
+      belka_network:
+        ipv4_address: 172.18.0.5
+    expose:
+    - "9000"
+      #ports:
+      #- "8000:8000"
+      #- "9443:9443"
+
+  rstudio:
+    image: "rocker/rstudio"
+    container_name: rstudio
+    restart: always
+    environment:
+      - USER=${RSTUDIO_USER}
+      - PASSWORD=${RSTUDIO_PASSWORD}
+    volumes:
+      - research:/home/${RSTUDIO_USER}/storage/
+    networks:
+      belka_network:
+        ipv4_address: 172.18.0.6
+    expose:
+    - "8787"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    user: "0"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini  
+        #- ./grafana/datasources:/etc/grafana/datasources
+        #- ./grafana/dashboards:/etc/grafana/dashboards
+        #- ./grafana/setup.sh:/setup.sh
+    environment:
+      - GF_SECURITY_ADMIN_USER=${ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    restart: unless-stopped
+    networks:
+      belka_network:
+        ipv4_address: 172.18.0.7
+    expose:
+      - 3000
+
+  jupyter:
+    image: 'jupyter/base-notebook:latest'
+    container_name: jupyter
+    restart: always
+    volumes:
+     - ./jupyter/jupyter_notebook_config.py:/home/jovyan/.jupyter/jupyter_notebook_config.py
+     - research:/home
+    working_dir: /home/${NB_USER}
+    environment:
+      JUPYTERHUB_SERVICE_PREFIX: ${JUPYTERHUB_SERVICE_PREFIX} 
+      #NB_USER: ${NB_USER}
+      #NB_UID: ${NB_UID}
+      #NB_GID: ${NB_GID}
+      CHOWN_HOME: ${CHOWN_HOME}
+      #CHOWN_HOME_OPTS: ${CHOWN_HOME_OPTS}
+      GRANT_SUDO: ${GRANT_SUDO}
+    user: root
+    networks:
+      belka_network:
+        ipv4_address: 172.18.0.8
+    expose:
+    - "8888"
+
+  nifi:
+    image: apache/nifi:latest
+    container_name: nifi
+    restart: always
+    networks:
+      belka_network:
+        ipv4_address: 172.18.0.9
+    environment:
+      - SINGLE_USER_CREDENTIALS_USERNAME=admin 
+      - SINGLE_USER_CREDENTIALS_PASSWORD=ctsBtRBKHRAx69EqUghvvgEvjnaLjFEB 
+      - NIFI_WEB_HTTP_PORT=8443
+      - NIFI_WEB_HTTP_HOST=172.18.0.9
+      - NIFI_WEB_PROXY_CONTEXT_PATH=/n1
+      - NIFI_REMOTE_INPUT_HOST=127.0.0.1
+
+  keycloak:
+    depends_on:
+      - postgres
+    image: jboss/keycloak:latest
+    container_name: keycloak
+    environment:
+      DB_VENDOR: postgres
+      DB_ADDR: postgres
+      DB_DATABASE: ${PG_DATABASE}
+      DB_USER: ${PG_USERNAME}
+      DB_PASSWORD: ${PG_PASSWORD}
+      PROXY_ADDRESS_FORWARDING: "true"
+      #KEYCLOAK_FRONTEND_URL: https://#change_me/auth
+      KEYCLOAK_USER: ${KEYCLOAK_USER}
+      KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
+
+    restart: unless-stopped
+    networks:
+      belka_network:
+        ipv4_address: 172.18.0.10
+    expose:
+      - 8080
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - prometheus_data:/prometheus      
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention=200h'  
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    networks:
+      belka_network:
+        ipv4_address: 172.18.0.11
+    expose:
+      - 9090
+  
+  # 1860
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    networks:
+      belka_network:
+        ipv4_address: 172.18.0.12
+    expose:
+      - 9100
+  
+  # 14114
+  postgres-exporter:
+    image: quay.io/prometheuscommunity/postgres-exporter
+    container_name: postgres-exporter
+    restart: always
+    environment:
+      - DATA_SOURCE_NAME=postgresql://${PG_USERNAME}:${PG_PASSWORD}@172.18.0.3:5432/${PG_DATABASE}?sslmode=disable
+    networks:
+      belka_network:
+        ipv4_address: 172.18.0.13
+    expose:
+      - 9187
+
+  # 193
+  cadvisor:
+    container_name: "cadvisor"
+    image: gcr.io/cadvisor/cadvisor:latest
+    privileged: true 
+    environment:
+      - cgroupns=host    
+    volumes:
+    - /:/rootfs:ro 
+    - /var/run:/var/run:rw 
+    - /sys:/sys:ro 
+    - /var/snap/docker/common/var-lib-docker:/var/lib/docker:ro 
+    networks:
+      belka_network:
+        ipv4_address: 172.18.0.14
+    expose:
+      - 8080
+
