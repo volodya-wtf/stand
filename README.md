@@ -56,7 +56,7 @@
 
   
 
-- **Jupyter ** *(jupyter)* -- интерактивная среда разработки на языке Python
+- **Jupyter** *(jupyter)* -- интерактивная среда разработки на языке Python
 
   https://jupyter.org/
 
