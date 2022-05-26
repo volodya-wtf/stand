@@ -1,0 +1,14 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/volodya-wtf/source/test-stand-main'
+docker volume create postgres 
+docker volume create pgadmin 
+docker volume create portainer 
+docker volume create research 
+docker volume create nifi 
+docker volume create grafana_data 
+docker volume create prometheus_data 
+echo "Volumes created"
+docker-compose up -d --build --remove-orphans 
+echo "Complete!"
+make: Leaving directory '/home/volodya-wtf/source/test-stand-main'
+ 

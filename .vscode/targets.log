@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed May 25 11:03:45 2022
+# Make data base, printed on Thu May 26 15:40:40 2022
 
 # Variables
 
@@ -23,7 +23,7 @@ SNAP_INSTANCE_KEY =
 # environment
 GJS_DEBUG_OUTPUT = stderr
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-b0c697dd-0395-474b-baae-e2c317fc0b64.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-5af0cb8f-b3e4-43c6-9200-2322a393c062.sock
 # environment
 VSCODE_CWD = /home/volodya-wtf
 # default
@@ -51,7 +51,7 @@ PWD = /home/volodya-wtf/source/test-stand-main
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # environment
-HOSTNAME = fedora
+HOSTNAME = perhonen
 # environment
 MAIL = /var/spool/mail/volodya-wtf
 # environment
@@ -83,7 +83,7 @@ CURDIR := /home/volodya-wtf/source/test-stand-main
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
 LESSOPEN = ||/usr/bin/lesspipe.sh %s
 # automatic
@@ -109,7 +109,7 @@ SNAP_REEXEC =
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 46670
+VSCODE_PID = 29508
 # environment
 SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS = 0
 # environment
@@ -117,7 +117,7 @@ XDG_SESSION_TYPE = x11
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/unix:@/tmp/.ICE-unix/1390,unix/unix:/tmp/.ICE-unix/1390
+SESSION_MANAGER = local/unix:@/tmp/.ICE-unix/1444,unix/unix:/tmp/.ICE-unix/1444
 # automatic
 *F = $(notdir $*)
 # environment
@@ -223,7 +223,7 @@ which_declare = declare -f
 # environment
 DEBUGINFOD_URLS = https://debuginfod.fedoraproject.org/ 
 # environment
-SSH_AGENT_PID = 1560
+SSH_AGENT_PID = 1614
 # environment
 _ = /usr/bin/make
 # environment
@@ -285,9 +285,9 @@ SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd
 
 # Directories
 
-# . (device 2067, inode 9178284): 11 files, no impossibilities.
+# . (device 2067, inode 9178284): 15 files, no impossibilities.
 
-# 11 files, no impossibilities in 1 directories.
+# 15 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -297,10 +297,10 @@ SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd
 
 # Not a target:
 Makefile:
-#  Implicit rule search has been done.
-#  Last modified 2022-05-24 14:00:33
-#  File has been updated.
  
+#  Implicit rule search has been done.
+#  Last modified 2022-05-25 16:58:48.67185547
+#  File has been updated.
 #  Successfully updated.
 
 up:
@@ -342,17 +342,17 @@ install:
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 10):
-	docker volume create postgres 1>/dev/null
-	docker volume create pgadmin 1>/dev/null
-	docker volume create portainer 1>/dev/null
-	docker volume create research 1>/dev/null
-	docker volume create nifi 1>/dev/null
-	docker volume create grafana_data 1>/dev/null
-	docker volume create prometheus_data 1>/dev/null
+	docker volume create postgres 
+	docker volume create pgadmin 
+	docker volume create portainer 
+	docker volume create research 
+	docker volume create nifi 
+	docker volume create grafana_data 
+	docker volume create prometheus_data 
 	
 	echo "Volumes created"
 	
-	docker-compose up -d --build --remove-orphans 1>/dev/null
+	docker-compose up -d --build --remove-orphans 
 	
 	echo "Complete!"
 	
@@ -373,12 +373,12 @@ down:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 20 / storage = 177 B / avg = 8 B
-# current buf: size = 8162 B / used = 177 B / count = 20 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 24 / storage = 204 B / avg = 8 B
+# current buf: size = 8162 B / used = 204 B / count = 24 / avg = 8 B
 
-# strcache performance: lookups = 28 / hit rate = 28%
+# strcache performance: lookups = 32 / hit rate = 25%
 # hash-table stats:
-# Load=20/8192=0%, Rehash=0, Collisions=0/28=0%
-# Finished Make data base on Wed May 25 11:03:45 2022
+# Load=24/8192=0%, Rehash=0, Collisions=0/32=0%
+# Finished Make data base on Thu May 26 15:40:40 2022
 
  

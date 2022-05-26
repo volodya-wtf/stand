@@ -24,7 +24,89 @@
 | postgres-exporter | quay.io/prometheuscommunity/postgres-exporter |                              |
 | cadvisor          | gcr.io/cadvisor/cadvisor:latest               |                              |
 
+**Краткое описание сервисов:**
 
+- **Веб сервер Apache** *(httpd)* -- выполняет роль обратного прокси и позволяет благодаря механизму виртуальных хостов разместить на одном IP адресе множество сервисов. Основными достоинствами Apache считаются надёжность и гибкость конфигурации.
+
+  https://httpd.apache.org
+
+  
+
+- **PostgreSQL** *(postgres)* -- свободная объектно-реляционная система управления базами данных (СУБД).
+
+  https://www.postgresql.org/
+
+  
+
+- **pgAdmin** *(pgadmin)* -- многоплатформенный графический интерфейс для управления СУБД PostgreSQL.
+
+  https://www.pgadmin.org/
+
+  
+
+- **Portainer** *(portainer)* -- инструмент для управления контейнерами в Docker, Swarm, Kubernetes и Azure ACI.
+
+  https://www.portainer.io/
+
+  
+
+- **RStudio** *(rstudio)* -- интерактивная среда разработки на языке R. 
+
+  https://www.rstudio.com/
+
+  
+
+- **Jupyter ** *(jupyter)* -- интерактивная среда разработки на языке Python
+
+  https://jupyter.org/
+
+  
+
+-  **Keycloak** *(keycloack)*— это решение для управления идентификацией и доступом с открытым исходным кодом, предназначенное для использования в ИС где  могут использоваться паттерны микросервисной архитектуры.
+
+   Keycloak предлагает такие функции, как единый вход (SSO), брокерская  идентификация и социальный вход в систему, федерация пользователей,  клиентские адаптеры, консоль администратора и консоль управления  учетными записями.
+
+  https://www.keycloak.org/
+
+  
+
+- **Prometheus** *(prometheus)* -- набор утилит с открытым кодом для мониторинга и уведомлений.
+
+  https://prometheus.io
+
+  
+
+- **Grafana** *(grafana)* -- средство для агрегирования и визуализации данных для мониторинга. Работает в связке с *prometheus*.
+
+  https://grafana.com/
+
+  
+
+- **Node-exporter** *node-exporter* -- сборщик метрик мониторинга с хостовой машины. Работает в связке с *prometheus*.
+
+  
+
+- **Postgres-exporter** *(postgres-exporter)* -- сборщик метрик *СУБД postgresql*. Работает в связке с *prometheus*.
+
+  
+
+- **Cadvisor** *(cadvisor)* -- сборщик метрик для контейнеров *docker*. Работает в связке с *prometheus*.
+
+  
+
+- **NiFi** *(nifi)* -- open source ETL/ELT-инструмент, который умеет работать со множеством  систем, причем не только класса Big Data и Data Warehouse. Вот некоторые из них: HDFS, Hive, HBase, Solr, Cassandra, MongoDB, ElastcSearch,  Kafka, RabbitMQ, Syslog, HTTPS, SFTP.  **Позволяет визуализировать и управлять потоком данных между сервисами.**
+
+  *ETL* означает извлечение, преобразование и загрузку. Это относится к процессу сбора данных из нескольких источников и подготовки данных  для интеграции и загрузки на целевую платформу, такую как хранилище  данных или аналитическая среда. 
+
+  *ELT* аналогичен, но  загружает данные в необработанном формате, оставляя преобразования для  людей, чтобы они могли применить их для «самостоятельной аналитики». Оба метода являются типичными примерами развертывания конвейера данных.
+
+  https://nifi.apache.org/
+
+  
+
+  
+
+  
 
 **Постоянные разделы (*persistant volumes*)**
 
@@ -64,7 +146,7 @@
 
 | volumes                                                      | host                                 | container                                        |
 | ------------------------------------------------------------ | ------------------------------------ | ------------------------------------------------ |
-| \- ./httpd/cert:/usr/local/apache2/cert                      | ./httpd/cert                         | /usr/local/apache2/cert                           |
+| \- ./httpd/cert:/usr/local/apache2/cert                      | ./httpd/cert                         | /usr/local/apache2/cer                           |
 | \- ./httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf     | ./httpd/httpd.conf                   | /usr/local/apache2/conf/httpd.conf               |
 | \- /etc/localtime:/etc/localtime:ro                          | /etc/localtime:                      | /etc/localtime:ro                                |
 | \- /var/run/docker.sock:/var/run/docker.sock:ro              | /var/run/docker.sock                 | /var/run/docker.sock:ro                          |
@@ -88,9 +170,8 @@
 
 Вам необходимо обновиться, установить любимый текстовый редактор и выполнить установку и настройку docker вот по этим ссылкам:
 
-[ubuntu](https://docs.docker.com/engine/install/ubuntu/)
-
-[linux-postinstall](https://docs.docker.com/engine/install/linux-postinstall/)	
+[ubuntu]: https://docs.docker.com/engine/install/ubuntu/	"Установка на ubuntu"
+[linux-postinstall]: ttps://docs.docker.com/engine/install/linux-postinstall/	"Настройка после установки"
 
 Получение всех необходимых файлов для развертывания выполняется с использованием git. Вы клонируете репозиторий под пользователем deploy, у поьзователя deploy отсутствуют привелегии sudo и единственная его задача запускать Makefile. Установите утилиту make (переключившись на пользователя root, разумеется!), она нам понадобится:
 
@@ -103,7 +184,7 @@ apt-get install make
 
 Теперь взглянем на структуру каталога с проектом:
 
-![Каталог проекта](https://github.com/volodya-wtf/stand/blob/main/readme/dir.png)
+![Каталог проекта](/home/volodya-wtf/Pictures/Screenshot from 2022-05-25 16-39-35.png)
 
 Сдесь мы видим уже описанный выше *docker-compose.yml,* *Makefile с* командами запуска проекта, пример окружения *.env.example* и .gitignore. В папках распологаются файлы настроек для сервисов *grafana*, *httpd*, *jupyter*, *prometheus*. 
 
@@ -133,8 +214,8 @@ LoadModule rewrite_module modules/mod_rewrite.so
 LoadModule headers_module modules/mod_headers.so
 ```
 
-Эндпоинты регистрируются так: создается VirtualHost на 443 порту, и он поделен на Location. Общими для всех Location будут две дерективы импорта ключей, расположенных в папке ./httpd/cert/ и созданных командой
-(под пользователем root и последующим изменением прав):
+Эндпоинты регистрируются так: создается VirtualHost на 443 порту, и он поделен на Location. Общими для всех Location будут две дерективы импорта ключей, расположенных в папке ./httpd/cert/ и созданных командой:
+
 ```bash
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout server.key -out server.crt
 ```
@@ -157,17 +238,17 @@ make install
 
 Незамедлительно вы начнете видеть диагностические сообщения. В случае удачного завершения, список поднятых сервисов выглядит:
 
-![docker_ps](https://github.com/volodya-wtf/stand/blob/main/readme/docker_ps.png)
+![docker_ps](/home/volodya-wtf/Desktop/Этапы деплоя/docker_ps.png)
 
 #### Начнем поэтапный обход и диагностику сервисов.
 
 1. httdp. Тут все тривиально.
 
-![httpd](https://github.com/volodya-wtf/stand/blob/main/readme/httpd.png)
+![httpd](/home/volodya-wtf/Desktop/Этапы деплоя/httpd.png)
 
 2. portainer. Свидетельством успешного старта будет список запущенных контейнеров.
 
-   ![portainer](https://github.com/volodya-wtf/stand/blob/main/readme/portainer.png)
+   ![portainer](/home/volodya-wtf/Desktop/Этапы деплоя/portainer.png)
 
 3.  Токен для jupyter
 
@@ -177,21 +258,21 @@ make install
  docker logs jupyter -f
 ```
 
-![](https://github.com/volodya-wtf/stand/blob/main/readme/jupyter.png)
+![](/home/volodya-wtf/Desktop/Этапы деплоя/jupyter.png)
 
 Находим, копируем и вставляем 
 
 [jupyter]: https://your-ip-or-domain/jupyter/	"Login"
 
-![](https://github.com/volodya-wtf/stand/blob/main/readme/jupyter-1.png)
+![](/home/volodya-wtf/Desktop/Этапы деплоя/jupyter-1.png)
 
-![ipython](https://github.com/volodya-wtf/stand/blob/main/readme/jupyter-2.png)
+![ipython](/home/volodya-wtf/Desktop/Этапы деплоя/jupyter-2.png)
 
 4. rstudio
 
 Логинемся под учетными данными из .env
 
-![rstudio](https://github.com/volodya-wtf/stand/blob/main/readme/rstudio.png)
+![rstudio](/home/volodya-wtf/Desktop/Этапы деплоя/rstudio.png)
 
 5. keycloak
 
@@ -199,7 +280,7 @@ make install
 
    [keycloak]: https://your-ip-or-domain/auth/	"keycloak"
 
-   ![keycloak](https://github.com/volodya-wtf/stand/blob/main/readme/keycloak.png)
+   ![keycloak](/home/volodya-wtf/Desktop/Этапы деплоя/keycloak.png)
 
 Вид панели администратора keycloak
 
@@ -207,9 +288,9 @@ make install
 
 Добавляем элемент и перемещаем. В случае проблем рекомендую проверить домен или ip адрес в конфиге Apache ./httpd/httpd.conf
 
-![n1-1](https://github.com/volodya-wtf/stand/blob/main/readme/n1-1.png)
+![n1-1](/home/volodya-wtf/Desktop/Этапы деплоя/n1-1.png)
 
-![n1-2](https://github.com/volodya-wtf/stand/blob/main/readme/n1-2.png))
+![n1-2](/home/volodya-wtf/Desktop/Этапы деплоя/n1-2.png)
 
 
 
@@ -217,37 +298,37 @@ make install
 
    Логинимся и добавляем в интерфейсе сервер с postgres. Все данные для входа и добавления базы берем из .env
 
-   ![pgadmin](https://github.com/volodya-wtf/stand/blob/main/readme/pgadmin.png)
+   ![pgadmin](/home/volodya-wtf/Desktop/Этапы деплоя/pgadmin.png)
 
 8. Переходим к самому интересному, секции мониторинга
 
 Логинимся данными из .env, создаем data source и импортируем три панели: *1860, 14114, 193*
 
-![1](https://github.com/volodya-wtf/stand/blob/main/readme/grafana-2.png)
+![1](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-2.png)
 
-![2](https://github.com/volodya-wtf/stand/blob/main/readme/grafana-3.png)
-
-
+![2](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-3.png)
 
 
 
-![3](https://github.com/volodya-wtf/stand/blob/main/readme/grafana-4.png)
+
+
+![3](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-4.png)
 
 И получаем соответственно:
 
-![5](https://github.com/volodya-wtf/stand/blob/main/readme/grafana-5.png)
+![5](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-5.png)
 
 Мониторинг docker:
 
-![6](https://github.com/volodya-wtf/stand/blob/main/readme/grafana-6.png)
+![6](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-6.png)
 
 Мониторинг postgres:
 
-![7](https://github.com/volodya-wtf/stand/blob/main/readme/grafana-7.png)
+![7](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-7.png)
 
 Мониторинг хоста:
 
-![8](https://github.com/volodya-wtf/stand/blob/main/readme/grafana-8.png)
+![8](/home/volodya-wtf/Desktop/Этапы деплоя/grafana-8.png)
 
 
 
